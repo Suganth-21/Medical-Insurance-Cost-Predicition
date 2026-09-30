@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MICA - Medical Insurance Cost Advisor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    colors: {
+                        page: 'var(--page-bg)',
+                        header: 'var(--header-bg)',
+                        card: 'var(--card-bg)',
+                        
+                        patient: 'var(--patient-card)',
+                        'patient-border': 'var(--patient-border)',
+                        
+                        health: 'var(--health-card)',
+                        'health-border': 'var(--health-border)',
+                        
+                        demo: 'var(--demo-card)',
+                        'demo-border': 'var(--demo-border)',
+                        
+                        med: 'var(--med-card)',
+                        'med-border': 'var(--med-border)',
+                        
+                        chronic: 'var(--chronic-card)',
+                        'chronic-border': 'var(--chronic-border)',
+                        
+                        disease: 'var(--disease-card)',
+                        'disease-border': 'var(--disease-border)',
+                        
+                        mental: 'var(--mental-card)',
+                        'mental-border': 'var(--mental-border)',
+                        
+                        derived: 'var(--derived-card)',
+                        'derived-border': 'var(--derived-border)',
+                        
+                        divider: 'var(--border-color)',
+                        brand: 'var(--brand-blue)',
+                        'brand-purple': 'var(--brand-purple)',
+                        'brand-cyan': 'var(--brand-cyan)',
+                        'brand-rose': 'var(--brand-rose)',
+                        'brand-orange': 'var(--brand-orange)',
+                        'brand-emerald': 'var(--brand-emerald)',
+                        'brand-pink': 'var(--brand-pink)',
+                        'brand-amber': 'var(--brand-amber)',
+                        
+                        result: 'var(--result-bg)',
+                        'result-card': 'var(--result-card)',
+                        'result-border': 'var(--result-border)',
+                        'result-text': 'var(--result-text)',
+                        
+                        't-primary': 'var(--text-primary)',
+                        't-secondary': 'var(--text-secondary)',
+                        't-muted': 'var(--text-muted)',
+                        't-label': 'var(--text-label)',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            /* Light Theme */
+            --page-bg: #F8FAFC;
+            --header-bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            
+            /* Section Backgrounds - Light */
+            --patient-card: #EFF6FF;
+            --patient-border: #DBEAFE;
+            --health-card: #F5F3FF;
+            --health-border: #EDE9FE;
+            --demo-card: #ECFEFF;
+            --demo-border: #CFFAFE;
+            --med-card: #FFF1F2;
+            --med-border: #FFE4E6;
+            --chronic-card: #FFF7ED;
+            --chronic-border: #FFEDD5;
+            --disease-card: #ECFDF5;
+            --disease-border: #D1FAE5;
+            --mental-card: #FDF2F8;
+            --mental-border: #FCE7F3;
+            --derived-card: #FFFBEB;
+            --derived-border: #FEF3C7;
+            
+            /* Form Inputs - Always Dark */
+            --input-bg: #111827;
+            --input-text: #F8FAFC;
+            --input-border: #374151;
+            --input-hover-bg: #172033;
+            --input-hover-border: #4B5563;
+            --input-placeholder: #9CA3AF;
+            --input-shadow: rgba(0, 0, 0, 0.1);
+            
+            /* Text */
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #94A3B8;
+            --text-label: #1E293B;
+            
+            /* Dividers */
+            --border-color: #E2E8F0;
+            
+            /* Accents */
+            --brand-blue: #3B82F6;
+            --brand-purple: #A855F7;
+            --brand-cyan: #06B6D4;
+            --brand-rose: #F43F5E;
+            --brand-orange: #F97316;
+            --brand-emerald: #10B981;
+            --brand-pink: #EC4899;
+            --brand-amber: #F59E0B;
+            
+            /* Result Box */
+            --result-bg: #F0FDFA;
+            --result-card: #FFFFFF;
+            --result-border: #CCFBF1;
+            --result-text: #0F766E;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme */
+            --page-bg: #070B14;
+            --header-bg: #111827;
+            --card-bg: #111827;
+            
+            /* Section Backgrounds - Dark */
+            --patient-card: #14213A;
+            --patient-border: #1E3A5F;
+            --health-card: #1D1835;
+            --health-border: #3B2A5E;
+            --demo-card: #082F49;
+            --demo-border: #0C4A6E;
+            --med-card: #4C0519;
+            --med-border: #881337;
+            --chronic-card: #431407;
+            --chronic-border: #7C2D12;
+            --disease-card: #022C22;
+            --disease-border: #064E3B;
+            --mental-card: #500724;
+            --mental-border: #831843;
+            --derived-card: #451A03;
+            --derived-border: #78350F;
+            
+            /* Form Inputs - High Contrast Dark */
+            --input-bg: #050B16;
+            --input-text: #F8FAFC;
+            --input-border: #475569;
+            --input-hover-bg: #0B1324;
+            --input-hover-border: #64748B;
+            --input-placeholder: #64748B;
+            --input-shadow: rgba(0, 0, 0, 0.4);
+            
+            /* Text */
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --text-muted: #64748B;
+            --text-label: #F1F5F9;
+            
+            /* Dividers */
+            --border-color: #334155;
+            
+            /* Result Box */
+            --result-bg: #0A1929;
+            --result-card: #050E17;
+            --result-border: #134E4A;
+            --result-text: #5EEAD4;
+        }
+
+        body {
+            background-color: var(--page-bg);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .input-field {
+            width: 100%;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            outline: none;
+            transition: all 0.2s ease;
+            
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            border: 1px solid var(--input-border);
+            box-shadow: 0 2px 4px var(--input-shadow);
+        }
+        
+        input[type="checkbox"].input-field {
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            accent-color: var(--brand-blue);
+            cursor: pointer;
+        }
+
+        .input-field::placeholder {
+            color: var(--input-placeholder);
+        }
+
+        .input-field:hover {
+            background-color: var(--input-hover-bg);
+            border-color: var(--input-hover-border);
+        }
+
+        /* Dynamic focus colors */
+        .patient-group .input-field:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); }
+        .health-group .input-field:focus { border-color: var(--brand-purple); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25); }
+        .demo-group .input-field:focus { border-color: var(--brand-cyan); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25); }
+        .med-group .input-field:focus { border-color: var(--brand-rose); box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25); }
+        .chronic-group .input-field:focus { border-color: var(--brand-orange); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25); }
+        .disease-group .input-field:focus { border-color: var(--brand-emerald); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25); }
+        .mental-group .input-field:focus { border-color: var(--brand-pink); box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.25); }
+        .derived-group .input-field:focus { border-color: var(--brand-amber); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25); }
+
+        select.input-field option { background-color: var(--input-bg); color: var(--input-text); }
+        select.input-field optgroup { background-color: var(--input-hover-bg); color: var(--input-text); font-weight: bold; }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group-checkbox { display: flex; flex-direction: row-reverse; align-items: center; justify-content: flex-end; gap: 0.75rem; }
+
+        .input-label-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: var(--text-label);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .form-group-checkbox .input-label-container {
+            margin-bottom: 0;
+        }
+
+        .input-icon {
+            margin-right: 0.5rem;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .patient-group .input-icon { color: var(--brand-blue); }
+        .health-group .input-icon { color: var(--brand-purple); }
+        .demo-group .input-icon { color: var(--brand-cyan); }
+        .med-group .input-icon { color: var(--brand-rose); }
+        .chronic-group .input-icon { color: var(--brand-orange); }
+        .disease-group .input-icon { color: var(--brand-emerald); }
+        .mental-group .input-icon { color: var(--brand-pink); }
+        .derived-group .input-icon { color: var(--brand-amber); }
+
+        /* Toggle switch */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .theme-switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #CBD5E1; transition: .3s; border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider { background-color: var(--brand-blue); }
+        input:checked + .slider:before { transform: translateX(22px); }
+    </style>
+    
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('mica-theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <script src="/static/script.js" defer></script>
+</head>
+<body class="font-sans flex flex-col min-h-screen">
+    <!-- Startup Animation Overlay -->
+    <div id="intro-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#070B14] transition-all duration-1000 ease-in-out">
+        <div id="intro-logo-container" class="relative w-48 h-48 transition-transform duration-1000 ease-out opacity-0 transform scale-50">
+            <svg id="intro-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full overflow-visible">
+                <!-- Fade Out Elements -->
+                <g id="intro-fade-parts" class="transition-opacity duration-1000">
+                    <!-- Tube -->
+                    <path d="M 50 25 A 32 32 0 1 1 18 57" fill="none" stroke="#2563EB" stroke-width="4.5" stroke-linecap="round" />
+                    <!-- Chest Piece -->
+                    <circle cx="18" cy="57" r="7" fill="#1E293B" />
+                    <circle cx="18" cy="57" r="3.5" fill="#F0FDFA" />
+                    <circle cx="18" cy="57" r="1.5" fill="#0D9488" />
+                    <!-- Ear Tips -->
+                    <circle cx="39" cy="9" r="3.5" fill="#1E293B" />
+                    <circle cx="61" cy="9" r="3.5" fill="#1E293B" />
+                    <!-- Paper Header Line -->
+                    <line x1="39" y1="42" x2="61" y2="42" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" />
+                    <!-- Medical Cross -->
+                    <path d="M 55 69 h 3 v -3 h 2 v 3 h 3 v 2 h -3 v 3 h -2 v -3 h -3 z" fill="#0D9488" />
+                </g>
+
+                <!-- Morph Elements -->
+                <path id="morph-m" d="M 32 32 L 68 32 L 68 78 L 32 78 L 32 32" fill="#FFFFFF" stroke="#1E293B" stroke-width="3" stroke-linejoin="round" class="transition-all duration-[1.2s] ease-in-out" />
+                <path id="morph-i" d="M 40 10 C 42 20 48 25 50 25" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round" class="transition-all duration-[1.2s] ease-in-out" />
+                <path id="morph-c" d="M 60 10 C 58 20 52 25 50 25" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round" class="transition-all duration-[1.2s] ease-in-out" />
+                <path id="morph-al" d="M 39 50 L 55 50" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" class="transition-all duration-[1.2s] ease-in-out" />
+                <path id="morph-ar" d="M 39 57 L 61 57" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" class="transition-all duration-[1.2s] ease-in-out" />
+                <path id="morph-ac" d="M 39 64 L 50 64" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" class="transition-all duration-[1.2s] ease-in-out" />
+            </svg>
+        </div>
+    </div>
+    <header class="bg-header border-b border-divider py-6 px-4 transition-colors duration-300">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex justify-end mb-4">
+                <div class="theme-switch-wrapper">
+                    <i class="fas fa-sun text-yellow-500"></i>
+                    <label class="theme-switch" aria-label="Toggle Dark Mode">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-moon text-blue-400"></i>
+                </div>
+            </div>
+            <div class="flex flex-col items-center text-center">
+                <div class="flex items-center justify-center mb-3">
+                    <img src="/static/assets/mica-logo.svg" alt="MICA Logo" class="h-14 w-14 object-contain mr-4 drop-shadow-sm transition-transform hover:scale-105 duration-200">
+                    <h1 class="text-4xl font-extrabold text-t-primary tracking-tight">MICA</h1>
+                </div>
+                <h2 class="text-base font-semibold text-brand mt-1">Medical Insurance Cost Advisor</h2>
+                <div class="w-16 h-1 bg-brand rounded-full my-4 opacity-80"></div>
+                <p class="text-t-secondary max-w-2xl text-sm">Smart medical cost estimation powered by machine learning</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full">
+        <div class="bg-card rounded-2xl shadow-xl border border-divider overflow-hidden transition-colors duration-300">
+            <div class="p-6 border-b border-divider flex items-center bg-card transition-colors duration-300">
+                <i class="fas fa-clipboard-user text-brand text-xl mr-3"></i>
+                <h2 class="text-xl font-bold text-t-primary">Healthcare Assessment Form</h2>
+            </div>
+            
+            <form id="prediction-form" class="p-8">
+                
+                <!-- 1. PATIENT PROFILE -->
+                <div class="mb-8 bg-patient rounded-xl p-6 border border-patient-border transition-colors duration-300 patient-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-users text-brand-blue mr-3"></i>PATIENT PROFILE
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-calendar-alt input-icon"></i><span>Age</span></div>
+                            <input type="number" id="age" required min="18" max="100" value="30" class="input-field" placeholder="e.g. 30">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-venus-mars input-icon"></i><span>Sex</span></div>
+                            <select id="sex" required class="input-field">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-map-marker-alt input-icon"></i><span>State / Union Territory</span></div>
+                            <select id="state" required class="input-field">
+                                <option value="Maharashtra" selected>Maharashtra</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Other">Other...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-child input-icon"></i><span>Dependents</span></div>
+                            <input type="number" id="dependents" required min="0" value="0" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-rupee-sign input-icon"></i><span>Annual Income</span></div>
+                            <input type="number" id="income" required min="0" step="1000" value="500000" class="input-field">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. HEALTH PROFILE -->
+                <div class="mb-8 bg-health rounded-xl p-6 border border-health-border transition-colors duration-300 health-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-heartbeat text-brand-purple mr-3"></i>HEALTH PROFILE
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-weight input-icon"></i><span>BMI</span></div>
+                            <input type="number" id="bmi" required min="10" max="50" step="0.1" value="24.0" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-smoking input-icon"></i><span>Smoking Status</span></div>
+                            <select id="smoker" required class="input-field">
+                                <option value="Never">Never</option>
+                                <option value="Former">Former</option>
+                                <option value="Current">Current</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-stethoscope input-icon"></i><span>Systolic BP</span></div>
+                            <input type="number" id="systolic_bp" required min="80" max="200" value="120" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-stethoscope input-icon"></i><span>Diastolic BP</span></div>
+                            <input type="number" id="diastolic_bp" required min="50" max="130" value="80" class="input-field">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. DEMOGRAPHICS & LIFESTYLE -->
+                <div class="mb-8 bg-demo rounded-xl p-6 border border-demo-border transition-colors duration-300 demo-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-home text-brand-cyan mr-3"></i>DEMOGRAPHICS & LIFESTYLE
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-city input-icon"></i><span>Area Type</span></div>
+                            <select id="urban_rural" class="input-field">
+                                <option value="Urban">Urban</option>
+                                <option value="Rural">Rural</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-graduation-cap input-icon"></i><span>Education</span></div>
+                            <select id="education" class="input-field">
+                                <option value="High School">High School</option>
+                                <option value="Bachelor">Bachelor's Degree</option>
+                                <option value="Master">Master's Degree</option>
+                                <option value="Doctorate">Doctorate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-ring input-icon"></i><span>Marital Status</span></div>
+                            <select id="marital_status" class="input-field">
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-briefcase input-icon"></i><span>Employment Status</span></div>
+                            <select id="employment_status" class="input-field">
+                                <option value="Employed">Employed</option>
+                                <option value="Self-Employed">Self-Employed</option>
+                                <option value="Unemployed">Unemployed</option>
+                                <option value="Retired">Retired</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-wine-glass input-icon"></i><span>Alcohol Frequency</span></div>
+                            <select id="alcohol_freq" class="input-field">
+                                <option value="Never">Never</option>
+                                <option value="Occasionally">Occasionally</option>
+                                <option value="Regularly">Regularly</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. MEDICAL HISTORY -->
+                <div class="mb-8 bg-med rounded-xl p-6 border border-med-border transition-colors duration-300 med-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-notes-medical text-brand-rose mr-3"></i>MEDICAL HISTORY
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-user-md input-icon"></i><span>Visits Last Year</span></div>
+                            <input type="number" id="visits_last_year" min="0" value="1" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-hospital input-icon"></i><span>Hosp. Stays (Last 3Yrs)</span></div>
+                            <input type="number" id="hospitalizations_last_3yrs" min="0" value="0" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-bed input-icon"></i><span>Days in Hosp. (3Yrs)</span></div>
+                            <input type="number" id="days_hospitalized_last_3yrs" min="0" value="0" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-pills input-icon"></i><span>Medication Count</span></div>
+                            <input type="number" id="medication_count" min="0" value="0" class="input-field">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. CHRONIC CONDITIONS -->
+                <div class="mb-8 bg-chronic rounded-xl p-6 border border-chronic-border transition-colors duration-300 chronic-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-disease text-brand-orange mr-3"></i>CHRONIC CONDITIONS
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="hypertension" class="input-field">
+                            <div class="input-label-container"><span>Hypertension</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="diabetes" class="input-field">
+                            <div class="input-label-container"><span>Diabetes</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="is_high_risk" class="input-field">
+                            <div class="input-label-container"><span>High Risk Patient</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. DISEASE / CONDITION HISTORY -->
+                <div class="mb-8 bg-disease rounded-xl p-6 border border-disease-border transition-colors duration-300 disease-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-lungs text-brand-emerald mr-3"></i>DISEASE / CONDITION HISTORY
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-vial input-icon"></i><span>LDL Cholesterol</span></div>
+                            <input type="number" id="ldl" min="50" max="300" value="100" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-tint input-icon"></i><span>HbA1c</span></div>
+                            <input type="number" id="hba1c" min="3" max="15" step="0.1" value="5.5" class="input-field">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 pt-6 border-t border-divider">
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="asthma" class="input-field">
+                            <div class="input-label-container"><span>Asthma</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="copd" class="input-field">
+                            <div class="input-label-container"><span>COPD</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="cardiovascular_disease" class="input-field">
+                            <div class="input-label-container"><span>Cardio Disease</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="cancer_history" class="input-field">
+                            <div class="input-label-container"><span>Cancer History</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="kidney_disease" class="input-field">
+                            <div class="input-label-container"><span>Kidney Disease</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="liver_disease" class="input-field">
+                            <div class="input-label-container"><span>Liver Disease</span></div>
+                        </div>
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="arthritis" class="input-field">
+                            <div class="input-label-container"><span>Arthritis</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. MENTAL HEALTH -->
+                <div class="mb-8 bg-mental rounded-xl p-6 border border-mental-border transition-colors duration-300 mental-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-brain text-brand-pink mr-3"></i>MENTAL HEALTH
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="mental_health" class="input-field">
+                            <div class="input-label-container"><span>Mental Health Conditions</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. DERIVED / SUMMARY INFORMATION -->
+                <div class="mb-10 bg-derived rounded-xl p-6 border border-derived-border transition-colors duration-300 derived-group">
+                    <h3 class="text-lg font-bold text-t-primary mb-6 pb-3 border-b border-divider flex items-center">
+                        <i class="fas fa-calculator text-brand-amber mr-3"></i>SUMMARY INFORMATION
+                    </h3>
+                    <p class="text-sm text-t-muted mb-4">
+                        <i class="fas fa-info-circle mr-1"></i> The following fields are handled internally by the MICA backend engine.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 opacity-60">
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-globe input-icon"></i><span>Region</span></div>
+                            <input type="text" disabled value="Auto-derived" class="input-field cursor-not-allowed bg-opacity-50">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-users-cog input-icon"></i><span>Household Size</span></div>
+                            <input type="text" disabled value="Auto-derived" class="input-field cursor-not-allowed bg-opacity-50">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-label-container"><i class="fas fa-list-ol input-icon"></i><span>Chronic Count</span></div>
+                            <input type="text" disabled value="Auto-derived" class="input-field cursor-not-allowed bg-opacity-50">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center justify-end gap-5 pt-6 border-t border-divider">
+                    <button type="reset" class="px-6 py-3 rounded-lg font-semibold text-t-secondary hover:text-t-primary hover:bg-divider transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-t-muted">
+                        Reset Form
+                    </button>
+                    <button type="submit" id="submit-btn" class="px-8 py-3 rounded-lg font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 active:scale-95 shadow-md hover:shadow-lg border border-blue-700 dark:border-blue-500 transition-all duration-200 flex items-center focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+                        <span id="btn-text">GENERATE PREDICTION</span>
+                        <i id="btn-spinner" class="fas fa-circle-notch fa-spin hidden ml-3"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div id="result-container" class="hidden bg-result p-10 border-t border-divider animate-fade-in-up transition-colors duration-300">
+                <div class="text-center max-w-lg mx-auto bg-result-card rounded-2xl shadow-xl border border-result-border p-8 transition-colors duration-300">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-result-border mb-5 text-result-text">
+                        <i class="fas fa-file-invoice-dollar text-2xl"></i>
+                    </div>
+                    <p class="text-sm font-bold text-result-text uppercase tracking-widest mb-2">YOUR ESTIMATE</p>
+                    <div class="my-4 border-b border-result-border w-20 mx-auto"></div>
+                    <h2 id="prediction-result" class="text-4xl md:text-5xl font-extrabold text-t-primary mb-3 tracking-tight"></h2>
+                    <p class="text-t-secondary font-medium text-lg mb-8">Estimated Annual Medical Cost</p>
+                    
+                    <p class="text-t-muted text-xs mt-4 italic"><i class="fas fa-info-circle mr-1"></i> Based on MICA's ML model</p>
+                    <p class="text-t-muted text-[10px] mt-2 border-t border-divider pt-4 leading-relaxed">
+                        Estimated value based on the provided health and demographic information. This is not a medical or insurance underwriting decision.
+                    </p>
+                </div>
+            </div>
+            
+            <div id="error-container" class="hidden bg-red-900/10 p-6 border-t border-red-500/20 text-center animate-fade-in-up">
+                <p id="error-message" class="text-red-500 font-bold"></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-8 text-center text-t-muted text-sm border-t border-divider bg-header transition-colors duration-300 mt-auto">
+        <p><i class="fas fa-shield-alt mr-2"></i> MICA &bull; Medical Insurance Cost Advisor</p>
+    </footer>
+    <style>
+        .cinematic-ease {
+            transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+        }
+        
+        @keyframes settle {
+            0% { transform: scale(0.85) translateY(10px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        
+        .animate-entrance {
+            animation: settle 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        
+        @keyframes subtle-breathe {
+            0% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.1)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.5)); }
+            100% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.1)); }
+        }
+        
+        .breathe-glow {
+            animation: subtle-breathe 2s ease-in-out infinite;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const introScreen = document.getElementById('intro-screen');
+            const container = document.getElementById('intro-logo-container');
+            const svg = document.getElementById('intro-svg');
+            
+            if (reducedMotion) {
+                setTimeout(() => {
+                    introScreen.style.opacity = '0';
+                    setTimeout(() => introScreen.remove(), 1000);
+                }, 500);
+                return;
+            }
+
+            function morphPath(element, startD, endD, duration) {
+                const startNums = startD.match(/-?\d*\.?\d+/g).map(Number);
+                const endNums = endD.match(/-?\d*\.?\d+/g).map(Number);
+                const text = startD.split(/-?\d*\.?\d+/);
+                
+                let startTime = null;
+                // Premium cinematic ease-out curve, similar to cubic-bezier(0.22, 1, 0.36, 1)
+                function ease(t) { return 1 - Math.pow(1 - t, 5); }
+                
+                function step(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = Math.min((timestamp - startTime) / duration, 1);
+                    const e = ease(progress);
+                    
+                    let newD = text[0];
+                    for (let i = 0; i < startNums.length; i++) {
+                        const current = startNums[i] + (endNums[i] - startNums[i]) * e;
+                        newD += current + text[i+1];
+                    }
+                    element.setAttribute('d', newD);
+                    
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+
+            // 1. Logo appears with a soft settling float
+            container.classList.remove('opacity-0', 'scale-50', 'transition-transform');
+            container.classList.add('animate-entrance');
+
+            // 2. Morph into MICA (starts at 1.1s, takes 1.8s)
+            setTimeout(() => {
+                const fadeParts = document.getElementById('intro-fade-parts');
+                fadeParts.classList.add('cinematic-ease');
+                fadeParts.style.transitionDuration = '1.8s';
+                fadeParts.style.opacity = '0';
+                
+                const paths = [
+                    { id: 'morph-m',  end: 'M -20 70 L -20 30 L -2.5 55 L 15 30 L 15 70', stroke: '#F8FAFC', fill: 'transparent', w: '4', cap: 'square', join: 'miter' },
+                    { id: 'morph-i',  end: 'M 30 30 C 30 43 30 57 30 70', stroke: '#F8FAFC', w: '4', cap: 'square', join: 'miter' },
+                    { id: 'morph-c',  end: 'M 70 30 C 43 30 43 70 70 70', stroke: '#F8FAFC', w: '4', cap: 'square', join: 'miter' },
+                    { id: 'morph-al', end: 'M 100 30 L 85 70', stroke: '#F8FAFC', w: '4', cap: 'square', join: 'miter' },
+                    { id: 'morph-ar', end: 'M 100 30 L 115 70', stroke: '#F8FAFC', w: '4', cap: 'square', join: 'miter' },
+                    { id: 'morph-ac', end: 'M 91 55 L 109 55', stroke: '#F8FAFC', w: '4', cap: 'square', join: 'miter' }
+                ];
+
+                paths.forEach(p => {
+                    const el = document.getElementById(p.id);
+                    const startD = el.getAttribute('d');
+                    
+                    el.classList.add('cinematic-ease');
+                    el.style.transitionDuration = '1.8s';
+                    morphPath(el, startD, p.end, 1800);
+                    
+                    el.style.stroke = p.stroke;
+                    el.style.strokeWidth = p.w;
+                    if (p.fill) el.style.fill = p.fill;
+                    if (p.cap) el.setAttribute('stroke-linecap', p.cap);
+                    if (p.join) el.setAttribute('stroke-linejoin', p.join);
+                });
+
+            }, 1100);
+
+            // 3. Add subtle breathing glow during the hold (Starts after morph finishes at 2.9s)
+            setTimeout(() => {
+                svg.classList.add('breathe-glow');
+            }, 2900);
+
+            // 4. Zoom out and reveal (starts at 4.4s, which is exactly 1.5s after the 1.8s morph finishes at 2.9s)
+            setTimeout(() => {
+                svg.classList.remove('breathe-glow'); // Remove pulse before zooming
+                
+                // Cinematic zoom out effect
+                container.classList.add('cinematic-ease');
+                container.style.transitionDuration = '1.5s';
+                container.style.transform = 'scale(0.85)';
+                container.style.opacity = '0';
+                
+                // Fade out background smoothly
+                introScreen.classList.add('cinematic-ease');
+                introScreen.style.transitionDuration = '1.5s';
+                introScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    introScreen.remove();
+                }, 1500);
+
+            }, 4400);
+        });
+    </script>
+</body>
+</html>

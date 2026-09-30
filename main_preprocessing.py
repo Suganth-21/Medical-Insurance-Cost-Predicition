@@ -20,10 +20,22 @@ def run_preprocessing():
         print(f"❌ Error: Cannot find {file_path}. Check your data folder!")
         return
         
-    # 2. Clean the data (Drop duplicates and person_id)
+    # 2. Clean the data (Drop duplicates, person_id, and leakage features)
     df = df.drop_duplicates()
+    
+    leakage_features = [
+        'annual_premium', 'monthly_premium', 'claims_count', 'avg_claim_amount', 
+        'total_claims_paid', 'proc_imaging_count', 'proc_surgery_count', 
+        'proc_physio_count', 'proc_consult_count', 'proc_lab_count', 'had_major_procedure',
+        'plan_type', 'network_tier', 'deductible', 'copay', 'risk_score'
+    ]
+    print(f"Dropping {len(leakage_features)} target-leaking features: {leakage_features}")
+    
+    cols_to_drop = leakage_features.copy()
     if 'person_id' in df.columns:
-        df = df.drop(columns=['person_id']) # Drop ID as it has no predictive value
+        cols_to_drop.append('person_id')
+        
+    df = df.drop(columns=cols_to_drop, errors='ignore')
     
     # 3. Separate Features (X) and Target (y)
     target_col = "annual_medical_cost"
